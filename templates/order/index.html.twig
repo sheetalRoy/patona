@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Welcome to Symfony!</title>
+        <style>
+            table{
+                width:100%;
+                border: 1px solid #ccc;
+                border-collapse: collapse
+            }
+            table th, table td{
+                border:1px solid #ccc;
+                text-align:left;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Order Detail</h1>
+        <table>
+            <thead>
+                <th>Order ID</th>
+                <th>order_datetime</th>
+                <th>shipping_address</th>
+                <th>unit_price</th>
+                <th>Total Order Value</th>
+                <th>Average Unit Price</th>
+                <th>No of Unit</th>
+                <th>state</th>
+            </thead>
+            <tbody>
+            {% for article in order %}
+                <tr>
+                    <td>{{article.order_id}}</td>
+                    <td>{{article.order_datetime|date("d/m/Y")}}</td>
+                    <td>{{article.customer.shipping_address.street}}</td>
+                    <td>
+                    {% set avg = 0 %}
+                    {% set total = 0 %}
+                    {% for item in article.items%}
+                    {% set total = total + item.unit_price%}
+                        <p>{{item.unit_price}}</p>
+                    {% endfor %}
+                    {% set avg = total/article.items|length%}
+                    
+                    </td>
+                    <td>Total {{total}}</td>
+                    <td>Average {{ avg }}</td>
+                    <td>No. of Unit {{article.items|length}}</td>
+                    <td>{{article.customer.shipping_address.state}}</td>
+                </tr>    
+            {% endfor %}
+            </tbody>
+        </table>
+        {# ... #}
+    </body>
+</html>
